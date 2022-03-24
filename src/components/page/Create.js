@@ -1,26 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import db from "../../firebase";
 
 const Create = () => {
   const [username, setUser] = useState("");
   const [password, setPass] = useState("");
-  const [isPending, setIsPending] = useState(false);
+
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const userNew = { username, password };
-
-    setIsPending(true);
-
-    fetch("http://localhost:8000/user/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userNew),
-    }).then(() => {
-      setIsPending(false);
-      console.log("success");
-      navigate("/");
-    });
+    db.collection('users').add({
+      username: username,
+      password: password
+    }).then(
+      navigate("/", alert("add success"))
+    )
   };
   return (
     <div className="create">
@@ -40,8 +36,8 @@ const Create = () => {
           value={password}
           onChange={(e) => setPass(e.target.value)}
         />
-        {!isPending && <button>Create</button>}
-        {isPending && <button>Creating...</button>}
+        <button>Create</button>
+
       </form>
     </div>
   );
