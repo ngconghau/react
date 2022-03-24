@@ -1,5 +1,5 @@
 import UserList from "./UserList";
-import useFetch from "./useFetch";
+import useFetch from "../useFetch";
 export default function Home() {
   const {
     data: users,
